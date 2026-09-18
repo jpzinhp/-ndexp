@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Promo Bot AI — Automatize ofertas nos seus grupos do WhatsApp</title>
+<style>:root{--bg:#0b1210;--bg2:#111c18;--card:#15231e;--line:#22362f;--text:#eaf3ef;--mut:#93a9a0;--brand:#25d366;--brand2:#128c7e;--accent:#ffb020;--err:#ff6b6b;--ok:#3ddc84;--r:14px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+a{color:inherit;text-decoration:none}h1,h2,h3{line-height:1.15;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:10px;padding:12px 20px;font:600 15px inherit;font-family:inherit;cursor:pointer;background:var(--brand);color:#04150c;transition:.15s}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}.btn.danger{background:transparent;color:var(--err);border:1px solid #4a2b2b}
+.btn.sm{padding:7px 12px;font-size:13px}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+input,select,textarea{width:100%;background:#0d1815;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:11px 13px;font:inherit;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--brand)}textarea{resize:vertical;min-height:150px;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+label{display:block;font-size:13px;color:var(--mut);margin:14px 0 6px;font-weight:500}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.muted{color:var(--mut)}.small{font-size:13px}
+/* landing */
+.nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(11,18,16,.8);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:800;font-size:19px;display:flex;gap:9px;align-items:center}.logo i{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;font-style:normal;font-size:16px}
+.nav nav{display:flex;gap:26px;align-items:center;color:var(--mut);font-size:14px}.nav nav a:hover{color:var(--text)}
+.hero{padding:84px 0 60px;background:radial-gradient(900px 400px at 75% -10%,rgba(37,211,102,.16),transparent),radial-gradient(600px 300px at 0% 10%,rgba(255,176,32,.08),transparent)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.pill{display:inline-block;padding:6px 12px;border:1px solid var(--line);border-radius:99px;font-size:13px;color:var(--brand);background:rgba(37,211,102,.07);margin-bottom:18px}
+.hero h1{font-size:clamp(34px,5vw,56px);font-weight:800;letter-spacing:-.02em}.hero h1 em{font-style:normal;color:var(--brand)}
+.hero p.lead{font-size:18px;color:var(--mut);margin:20px 0 28px;max-width:540px}.hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+.chat{background:#0a1512;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.chat .bar{display:flex;gap:10px;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:14px;font-weight:600}
+.bubble{background:#1b3a2d;border-radius:4px 14px 14px 14px;padding:12px 14px;font-size:14px;margin-bottom:10px;max-width:92%;white-space:pre-line}
+.bubble small{display:block;color:var(--mut);text-align:right;margin-top:4px}
+section{padding:72px 0}section h2{font-size:clamp(26px,3.4vw,38px);text-align:center;letter-spacing:-.01em}
+section .sub{text-align:center;color:var(--mut);margin:12px auto 44px;max-width:620px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.feat .ic{font-size:26px;margin-bottom:10px}.feat h3{font-size:17px;margin-bottom:6px}.feat p{margin:0;color:var(--mut);font-size:14.5px}
+.step .n{width:34px;height:34px;border-radius:50%;background:rgba(37,211,102,.14);color:var(--brand);display:grid;place-items:center;font-weight:800;margin-bottom:12px}
+.plan{position:relative;display:flex;flex-direction:column}.plan.pop{border-color:var(--brand);box-shadow:0 0 0 1px var(--brand),0 20px 60px rgba(37,211,102,.12)}
+.plan .tag{position:absolute;top:-12px;left:22px;background:var(--brand);color:#04150c;font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px}
+.plan .price{font-size:42px;font-weight:800;margin:10px 0}.plan .price span{font-size:15px;color:var(--mut);font-weight:500}
+.plan ul{list-style:none;padding:0;margin:8px 0 22px;flex:1}.plan li{padding:7px 0;color:var(--mut);font-size:14.5px}.plan li::before{content:'✓';color:var(--brand);margin-right:9px;font-weight:700}
+.faq{max-width:760px;margin:0 auto}.faq details{border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:10px;background:var(--card)}
+.faq summary{cursor:pointer;font-weight:600}.faq p{color:var(--mut);margin:10px 0 0;font-size:14.5px}
+.cta-band{text-align:center;background:linear-gradient(135deg,#0f2a1e,#0b1f1b);border:1px solid var(--line);border-radius:24px;padding:56px 24px}
+footer{border-top:1px solid var(--line);padding:32px 0;color:var(--mut);font-size:13px}
+/* auth */
+.auth{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(700px 400px at 50% -10%,rgba(37,211,102,.14),transparent)}
+.auth .card{width:100%;max-width:440px}.auth h1{font-size:26px;margin:18px 0 4px}
+.err{color:var(--err);font-size:14px;margin-top:12px;min-height:20px}
+.plans-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.plans-pick label{margin:0;cursor:pointer}
+.plans-pick input{display:none}.plans-pick span{display:block;text-align:center;border:1px solid var(--line);border-radius:10px;padding:10px 4px;color:var(--text);font-size:13px}
+.plans-pick input:checked+span{border-color:var(--brand);background:rgba(37,211,102,.1)}.plans-pick b{display:block;font-size:15px}
+/* dashboard */
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.side{background:var(--bg2);border-right:1px solid var(--line);padding:20px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px}
+.side .logo{padding:4px 10px 18px}.side button.nav-i{all:unset;display:flex;gap:11px;align-items:center;padding:11px 12px;border-radius:10px;color:var(--mut);cursor:pointer;font-size:14.5px;font-weight:500}
+.side button.nav-i:hover{background:#17271f;color:var(--text)}.side button.nav-i.on{background:rgba(37,211,102,.12);color:var(--brand)}
+.side .foot{margin-top:auto;padding:12px;border-top:1px solid var(--line);font-size:13px}
+.main{padding:28px 32px;max-width:1100px;width:100%}.main h1{font-size:26px;margin-bottom:4px}.head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}.stat b{display:block;font-size:30px;font-weight:800}.stat span{color:var(--mut);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--mut);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:12px 10px;border-bottom:1px solid #1b2c26;vertical-align:middle}tr:last-child td{border-bottom:0}
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600}
+.b-ok{background:rgba(61,220,132,.13);color:var(--ok)}.b-err{background:rgba(255,107,107,.13);color:var(--err)}.b-warn{background:rgba(255,176,32,.13);color:var(--accent)}.b-off{background:#1c2b25;color:var(--mut)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.gap{gap:18px}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chips label{margin:0}.chips input{display:none}
+.chips span{display:inline-block;padding:7px 13px;border:1px solid var(--line);border-radius:99px;font-size:13.5px;color:var(--mut);cursor:pointer;user-select:none}
+.chips input:checked+span{border-color:var(--brand);color:var(--brand);background:rgba(37,211,102,.09)}
+.var{cursor:pointer;background:#0d1815;border:1px dashed var(--line);border-radius:6px;padding:3px 8px;font:12px ui-monospace,monospace;color:var(--accent)}
+.preview{background:#1b3a2d;border-radius:4px 14px 14px 14px;padding:14px;white-space:pre-wrap;font-size:14px;min-height:150px}
+.switch{position:relative;width:44px;height:24px;flex:none}.switch input{display:none}.switch i{position:absolute;inset:0;background:#2a3d35;border-radius:99px;cursor:pointer;transition:.2s}
+.switch i::after{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}.switch input:checked+i{background:var(--brand)}.switch input:checked+i::after{transform:translateX(20px)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:30px 16px;z-index:50}.modal.open{display:flex}
+.modal .card{width:100%;max-width:760px}.toast{position:fixed;bottom:22px;right:22px;background:#1d3128;border:1px solid var(--line);padding:13px 18px;border-radius:12px;z-index:99;max-width:340px;font-size:14px}
+.toast.err{border-color:#5a2f2f;color:var(--err)}.banner{background:rgba(255,176,32,.1);border:1px solid rgba(255,176,32,.35);color:var(--accent);padding:12px 16px;border-radius:12px;margin-bottom:18px;font-size:14px}
+.empty{text-align:center;color:var(--mut);padding:34px 10px}.menu-btn{display:none}
+@media(max-width:900px){.hero .wrap,.two{grid-template-columns:1fr}.grid3,.grid4,.stats{grid-template-columns:1fr 1fr}.nav nav a.hide-m{display:none}
+.app{grid-template-columns:1fr}.side{position:fixed;left:-260px;width:240px;z-index:40;transition:.2s}.side.open{left:0}.menu-btn{display:inline-flex}.main{padding:18px 16px}}
+@media(max-width:560px){.grid3,.grid4{grid-template-columns:1fr}}
+</style></head><body>
+<div id="root"></div><div class="modal" id="modal"><div class="card" id="modalBody"></div></div>
+<template id="tpl-landing"><header class="nav"><div class="wrap"><a class="logo" href="#/"><i>🤖</i>Promo Bot AI</a>
+<nav><a class="hide-m" href="#recursos">Recursos</a><a class="hide-m" href="#como">Como funciona</a><a class="hide-m" href="#planos">Planos</a><a class="hide-m" href="#faq">FAQ</a><a href="#/login">Entrar</a><a class="btn sm" href="#/cadastro">Começar agora</a></nav></div></header>
+
+<section class="hero"><div class="wrap"><div>
+<span class="pill">✓ Integrações e APIs oficiais</span>
+<h1>Suas ofertas nos grupos do WhatsApp, <em>no piloto automático</em>.</h1>
+<p class="lead">Escolha marketplaces, nichos e palavras-chave. O Promo Bot AI busca as melhores ofertas e envia para os seus grupos no intervalo que você definir, sem repetir promoções.</p>
+<div class="cta"><a class="btn" href="#/cadastro?plano=pro">Começar agora</a><a class="btn ghost" href="#como">Ver como funciona</a></div>
+<p class="muted small" style="margin-top:14px">7 dias de teste grátis · Sem burlar limites ou termos das plataformas</p></div>
+<div class="chat"><div class="bar">📢 Ofertas Tech BR <span class="muted small" style="font-weight:400">· 248 membros</span></div>
+<div class="bubble">🔥 <b>Fone Bluetooth Pro ANC</b>
+
+💰 De <s>R$ 399,90</s> por <b>R$ 249,90</b>
+🏷️ 38% OFF
+🛒 Mercado Livre
+
+👉 https://exemplo.com/oferta<small>10:30 ✓✓</small></div>
+<div class="bubble">🔥 <b>Air Fryer 5L Digital</b>
+
+💰 De <s>R$ 429,00</s> por <b>R$ 279,00</b>
+🏷️ 35% OFF
+🛒 Shopee
+
+👉 https://exemplo.com/oferta2<small>11:00 ✓✓</small></div></div></div></section>
+
+<section id="recursos"><div class="wrap"><h2>Tudo para automatizar sua divulgação</h2><p class="sub">Configure uma vez. O sistema executa sozinho, registra tudo e evita repetição.</p>
+<div class="grid3">
+<div class="card feat"><div class="ic">🛍️</div><h3>Vários marketplaces</h3><p>Monitore Mercado Livre, Shopee e outros marketplaces conforme forem integrados.</p></div>
+<div class="card feat"><div class="ic">🎯</div><h3>Nichos e palavras-chave</h3><p>Eletrônicos, celulares, games, moda, beleza, ferramentas e mais. Refine por termos e desconto mínimo.</p></div>
+<div class="card feat"><div class="ic">⏱️</div><h3>Agendamento flexível</h3><p>Envios a cada 5, 10, 15, 30 ou 60 minutos, com limite de ofertas por envio.</p></div>
+<div class="card feat"><div class="ic">✍️</div><h3>Editor de mensagem</h3><p>Personalize com nome, preço, desconto, marketplace e link de afiliado, com pré-visualização ao vivo.</p></div>
+<div class="card feat"><div class="ic">♻️</div><h3>Sem ofertas repetidas</h3><p>Cada produto só é enviado uma vez por automação.</p></div>
+<div class="card feat"><div class="ic">📊</div><h3>Painel e histórico</h3><p>Automações ativas, ofertas encontradas e enviadas, histórico completo e registro de erros.</p></div>
+</div></div></section>
+
+<section id="como" style="background:var(--bg2)"><div class="wrap"><h2>Como funciona</h2><p class="sub">Do cadastro à primeira oferta enviada em poucos minutos.</p>
+<div class="grid4">
+<div class="card step"><div class="n">1</div><h3>Escolha um plano</h3><p class="muted small">Comece com 7 dias grátis.</p></div>
+<div class="card step"><div class="n">2</div><h3>Conecte suas contas</h3><p class="muted small">Credenciais guardadas criptografadas no servidor.</p></div>
+<div class="card step"><div class="n">3</div><h3>Configure a automação</h3><p class="muted small">Marketplaces, nicho, intervalo, grupos e mensagem.</p></div>
+<div class="card step"><div class="n">4</div><h3>Ative e acompanhe</h3><p class="muted small">O sistema executa e mostra o histórico.</p></div>
+</div></div></section>
+
+<section id="planos"><div class="wrap"><h2>Planos</h2><p class="sub">Todos com 7 dias de teste grátis. Cancele quando quiser.</p>
+<div class="grid3" id="plans"></div></div></section>
+
+<section id="faq" style="background:var(--bg2)"><div class="wrap"><h2>Perguntas frequentes</h2><p class="sub"></p><div class="faq">
+<details><summary>O Promo Bot AI usa APIs oficiais?</summary><p>Sim. As buscas usam as APIs oficiais dos marketplaces (ex.: Mercado Livre e Programa de Afiliados da Shopee) e os envios usam a WhatsApp Business Platform (Cloud API) da Meta. Não usamos técnicas para burlar bloqueios, limites ou sistemas de segurança.</p></details>
+<details><summary>Preciso ter credenciais das plataformas?</summary><p>Sim. Você cadastra suas próprias credenciais (chaves de API) no painel. Elas são criptografadas no servidor e nunca são exibidas novamente no navegador.</p></details>
+<details><summary>Posso enviar para qualquer grupo?</summary><p>Somente para grupos e contatos que você está autorizado a contatar, respeitando as políticas do WhatsApp. O envio a grupos via API oficial depende da elegibilidade da sua conta na Meta.</p></details>
+<details><summary>Como evitam ofertas repetidas?</summary><p>Cada produto enviado é registrado por automação e não é enviado novamente.</p></details>
+<details><summary>Posso pausar ou cancelar?</summary><p>Pause qualquer automação a qualquer momento pelo painel. Não há fidelidade.</p></details>
+<details><summary>Os links são de afiliado?</summary><p>Quando você configura seu programa de afiliados, os links de compra saem com o seu rastreamento (quando disponível no marketplace).</p></details>
+</div></div></section>
+
+<section><div class="wrap"><div class="cta-band"><h2>Pronto para automatizar suas ofertas?</h2><p class="sub">Crie sua conta e configure sua primeira automação hoje.</p><a class="btn" href="#/cadastro?plano=pro">Começar agora</a></div></div></section>
+<footer><div class="wrap">© 2026 Promo Bot AI. Versão HTML autônoma (modo simulado). Ferramenta independente, não afiliada ao WhatsApp/Meta, Mercado Livre ou Shopee.</div></footer>
+</template>
+<script>
+const Core = (() => {
+  const PLANS = {
+    starter:  { id: 'starter',  name: 'Starter',  price: 29,  maxAutomations: 1,  maxDestinations: 3,   minInterval: 30, maxPerRun: 3 },
+    pro:      { id: 'pro',      name: 'Pro',      price: 59,  maxAutomations: 5,  maxDestinations: 15,  minInterval: 10, maxPerRun: 5 },
+    business: { id: 'business', name: 'Business', price: 129, maxAutomations: 20, maxDestinations: 100, minInterval: 5,  maxPerRun: 10 },
+  };
+  const MARKETPLACES = [{ id: 'mercadolivre', name: 'Mercado Livre' }, { id: 'shopee', name: 'Shopee' }];
+  const NICHES = {
+    eletronicos: { name: 'Eletrônicos', q: 'eletrônicos' }, celulares: { name: 'Celulares', q: 'celular smartphone' },
+    informatica: { name: 'Informática', q: 'notebook informática' }, casa: { name: 'Casa', q: 'casa utilidades' },
+    games: { name: 'Games', q: 'games console' }, moda: { name: 'Moda', q: 'moda roupas' }, beleza: { name: 'Beleza', q: 'beleza perfume' },
+    ferramentas: { name: 'Ferramentas', q: 'ferramentas' }, esporte: { name: 'Esporte', q: 'esporte fitness' }, eletrodomesticos: { name: 'Eletrodomésticos', q: 'eletrodomésticos' },
+  };
+  const INTERVALS = [5, 10, 15, 30, 60];
+  const DEFAULT_TEMPLATE = `🔥 *{nome}*\n\n💰 De ~{preco_original}~ por *{preco}*\n🏷️ {desconto} OFF\n🛒 {marketplace}\n\n👉 {link}`;
+  const CFG = { pixKey: '079.464.075-30', pixName: 'PROMO BOT AI', pixCity: 'BRASIL', adminHash: '7be48068f434b6f56aa5b395739b2ee5acfa0ee6ab71bc26ee5889addfea054b', trialDays: 7 };
+
+  // ---------- armazenamento local (localStorage) ----------
+  const KEY = 'promobot_v1', SKEY = 'promobot_session';
+  // armazenamento com plano B: se o visualizador bloquear o localStorage, usa memória (dados duram só com a página aberta)
+  const mem = {}; let persistent = true;
+  const store = {
+    get: (k) => { try { return localStorage.getItem(k); } catch { persistent = false; return k in mem ? mem[k] : null; } },
+    set: (k, v) => { try { localStorage.setItem(k, v); } catch { persistent = false; mem[k] = String(v); } },
+    del: (k) => { try { localStorage.removeItem(k); } catch { persistent = false; delete mem[k]; } },
+  };
+  try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); } catch { persistent = false; }
+  const fresh = () => ({ seq: 1, users: [], destinations: [], automations: [], offers: [], logs: [], payments: [] });
+  const load = () => { try { return JSON.parse(store.get(KEY)) || fresh(); } catch { return fresh(); } };
+  let DB = load();
+  const save = () => store.set(KEY, JSON.stringify(DB));
+  const nid = () => DB.seq++;
+  const now = () => Date.now();
+  const err = (m) => { throw new Error(m); };
+  const str = (v, n = 200) => (typeof v === 'string' ? v.trim().slice(0, n) : '');
+
+  async function sha256(s) {
+    if (globalThis.crypto && crypto.subtle) {
+      const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+      return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
+    }
+    let h = 5381; for (const c of s) h = ((h << 5) + h + c.charCodeAt(0)) >>> 0; return 'f' + h.toString(16);
+  }
+  const rnd = () => [...crypto.getRandomValues(new Uint8Array(12))].map((x) => x.toString(16).padStart(2, '0')).join('');
+
+  // ---------- autenticação ----------
+  const planOf = (u) => PLANS[u.plan] || PLANS.starter;
+  const hasAccess = (u) => (u.plan_status === 'active' && (!u.plan_expires_at || u.plan_expires_at > now())) || (u.plan_status === 'trial' && u.trial_ends_at > now());
+  const currentUser = () => { const id = Number(store.get(SKEY)); return DB.users.find((u) => u.id === id) || null; };
+  async function register({ name, email, password, plan }) {
+    name = str(name, 80); email = str(email, 120).toLowerCase();
+    if (!name) err('Informe seu nome.');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) err('E-mail inválido.');
+    if (String(password || '').length < 8) err('A senha deve ter ao menos 8 caracteres.');
+    if (DB.users.some((u) => u.email === email)) err('Este e-mail já está cadastrado neste navegador.');
+    const salt = rnd();
+    const u = { id: nid(), name, email, salt, pw: await sha256(salt + password), plan: PLANS[plan] ? plan : 'starter', plan_status: 'trial', trial_ends_at: now() + CFG.trialDays * 86400000, plan_expires_at: null, is_admin: false, created_at: now() };
+    DB.users.push(u); save(); store.set(SKEY, u.id); return u;
+  }
+  async function login(email, password) {
+    const u = DB.users.find((x) => x.email === str(email, 120).toLowerCase() && !x.is_admin);
+    if (!u || u.pw !== await sha256(u.salt + String(password || ''))) err('E-mail ou senha incorretos.');
+    store.set(SKEY, u.id); return u;
+  }
+  async function adminLogin(code) {
+    if (!globalThis.crypto?.subtle) err('Abra o arquivo em um navegador moderno (Chrome, Edge, Firefox ou Safari).');
+    if (await sha256(String(code || '').trim()) !== CFG.adminHash) err('Código de administrador inválido.');
+    let a = DB.users.find((u) => u.is_admin);
+    if (!a) { a = { id: nid(), name: 'Administrador', email: 'admin@local', salt: '', pw: '', plan: 'business', plan_status: 'active', trial_ends_at: null, plan_expires_at: null, is_admin: true, created_at: now() }; DB.users.push(a); save(); }
+    store.set(SKEY, a.id); return a;
+  }
+  const logout = () => store.del(SKEY);
+
+  // ---------- mensagem ----------
+  const brl = (n) => (n == null ? '' : Number(n).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
+  function render(template, o) {
+    const vars = { nome: o.title || '', preco: brl(o.price), preco_original: o.originalPrice && o.originalPrice > o.price ? brl(o.originalPrice) : '', desconto: o.discount ? `${o.discount}%` : '', marketplace: o.marketplaceName || '', link: o.link || '' };
+    return template.split('\n').map((line) => { let empty = false; const out = line.replace(/\{(\w+)\}/g, (_, k) => { const v = vars[k] ?? ''; if (!v) empty = true; return v; }); return empty ? null : out; })
+      .filter((l) => l !== null).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  }
+  const sample = { title: 'Fone Bluetooth Pro ANC', price: 249.9, originalPrice: 399.9, discount: 38, marketplaceName: 'Mercado Livre', link: 'https://exemplo.com/oferta' };
+
+  // ---------- Pix copia e cola (BR Code) ----------
+  const tlv = (id, v) => id + String(v.length).padStart(2, '0') + v;
+  function crc16(s) { let c = 0xffff; for (let i = 0; i < s.length; i++) { c ^= s.charCodeAt(i) << 8; for (let j = 0; j < 8; j++) c = c & 0x8000 ? ((c << 1) ^ 0x1021) & 0xffff : (c << 1) & 0xffff; } return c.toString(16).toUpperCase().padStart(4, '0'); }
+  const pixKeyClean = () => (/^[\d.\-\/\s]+$/.test(CFG.pixKey) ? CFG.pixKey.replace(/\D/g, '') : CFG.pixKey.trim());
+  const clean = (s, n) => String(s).normalize('NFD').replace(/[^\x20-\x7E]/g, '').toUpperCase().slice(0, n);
+  function pixPayload(amount, txid) {
+    const body = tlv('00', '01') + tlv('01', '11') + tlv('26', tlv('00', 'br.gov.bcb.pix') + tlv('01', pixKeyClean())) + tlv('52', '0000') + tlv('53', '986') + tlv('54', amount.toFixed(2)) + tlv('58', 'BR') +
+      tlv('59', clean(CFG.pixName, 25)) + tlv('60', clean(CFG.pixCity, 15)) + tlv('62', tlv('05', (txid || '***').replace(/[^A-Za-z0-9]/g, '').slice(0, 25) || '***')) + '6304';
+    return body + crc16(body);
+  }
+
+  // ---------- destinos ----------
+  const destinations = (uid) => DB.destinations.filter((d) => d.user_id === uid).sort((a, b) => b.id - a.id);
+  function addDestination(u, b) {
+    if (destinations(u.id).length >= planOf(u).maxDestinations) err(`O plano ${planOf(u).name} permite ${planOf(u).maxDestinations} destinos.`);
+    const name = str(b.name, 80), target = str(b.target, 120);
+    if (!name || !target) err('Informe nome e identificador do destino.');
+    if (b.authorized !== true) err('Confirme que você tem autorização para enviar mensagens a este destino.');
+    const d = { id: nid(), user_id: u.id, name, type: b.type === 'phone' ? 'phone' : 'group', target, created_at: now() }; DB.destinations.push(d); save(); return d;
+  }
+  function deleteDestination(u, id) {
+    DB.destinations = DB.destinations.filter((d) => !(d.id === id && d.user_id === u.id));
+    DB.automations.filter((a) => a.user_id === u.id).forEach((a) => { a.destination_ids = a.destination_ids.filter((x) => x !== id); }); save();
+  }
+
+  // ---------- automações ----------
+  const automations = (uid) => DB.automations.filter((a) => a.user_id === uid).sort((a, b) => b.id - a.id);
+  const own = (u, id) => DB.automations.find((a) => a.id === id && a.user_id === u.id) || err('Automação não encontrada.');
+  const uniq = (v, allowed) => [...new Set((Array.isArray(v) ? v : []).map((x) => String(x).trim()).filter((x) => x && (!allowed || allowed.includes(x))))];
+  function validate(u, b) {
+    const plan = planOf(u); const name = str(b.name, 80); if (!name) err('Informe um nome para a automação.');
+    const marketplaces = uniq(b.marketplaces, MARKETPLACES.map((m) => m.id)), niches = uniq(b.niches, Object.keys(NICHES)), keywords = uniq(b.keywords).map((k) => k.slice(0, 60)).slice(0, 20);
+    if (!marketplaces.length) err('Escolha ao menos um marketplace.'); if (!niches.length && !keywords.length) err('Escolha um nicho ou informe palavras-chave.');
+    const interval = Number(b.interval_min); if (!INTERVALS.includes(interval)) err('Intervalo inválido.');
+    if (interval < plan.minInterval) err(`O plano ${plan.name} permite intervalo mínimo de ${plan.minInterval} min.`);
+    const template = str(b.template, 1500) || DEFAULT_TEMPLATE; if (!/\{link\}/.test(template)) err('O modelo precisa conter {link}.');
+    const mine = destinations(u.id).map((d) => d.id);
+    return { name, marketplaces, niches, keywords, interval_min: interval, max_per_run: Math.max(1, Math.min(Number(b.max_per_run) || 1, plan.maxPerRun)), min_discount: Math.max(0, Math.min(Number(b.min_discount) || 0, 90)), template, destination_ids: (b.destination_ids || []).map(Number).filter((d) => mine.includes(d)) };
+  }
+  function saveAutomation(u, id, b) {
+    const v = validate(u, b);
+    if (id) { Object.assign(own(u, id), v); save(); return; }
+    if (automations(u.id).length >= planOf(u).maxAutomations) err(`O plano ${planOf(u).name} permite ${planOf(u).maxAutomations} automação(ões). Faça upgrade para criar mais.`);
+    DB.automations.push({ id: nid(), user_id: u.id, active: false, last_run_at: null, next_run_at: null, created_at: now(), ...v }); save();
+  }
+  function deleteAutomation(u, id) { own(u, id); DB.automations = DB.automations.filter((a) => a.id !== id); DB.offers = DB.offers.filter((o) => o.automation_id !== id); DB.logs = DB.logs.filter((l) => l.automation_id !== id); save(); }
+  function toggle(u, id) {
+    const a = own(u, id); const on = !a.active;
+    if (on && !hasAccess(u)) err('Sua assinatura/teste expirou. Ative um plano para retomar.');
+    if (on && !a.destination_ids.length) err('Selecione ao menos um destino antes de ativar.');
+    a.active = on; a.next_run_at = on ? now() : null; save(); return on;
+  }
+
+  // ---------- ofertas (SIMULADAS: este HTML não consulta marketplaces nem envia ao WhatsApp) ----------
+  const NAMES = ['Fone Bluetooth ANC', 'Smartphone 128GB', 'Notebook 15" i5', 'Air Fryer 5L', 'Teclado Mecânico RGB', 'Console Portátil', 'Furadeira 650W', 'Perfume 100ml', 'Tênis Running', 'Smart TV 50" 4K', 'Mouse Gamer', 'Cafeteira Elétrica', 'Caixa de Som 30W', 'Monitor 27" 144Hz', 'SSD 1TB NVMe', 'Liquidificador 1200W', 'Kit Ferramentas 110pç', 'Relógio Smartwatch', 'Cadeira Gamer', 'Aspirador Robô'];
+  function demoSearch(mp, q, limit) {
+    const seed = (q.length * 7 + mp.length) % NAMES.length, out = [];
+    for (let i = 0; i < Math.min(limit * 3, NAMES.length); i++) {
+      const idx = (seed + i) % NAMES.length, orig = 100 + (idx * 137) % 2900, disc = 5 + ((idx + i * 3) % 50);
+      out.push({ marketplace: mp, marketplaceName: MARKETPLACES.find((m) => m.id === mp).name, id: `demo-${mp}-${idx}`, title: NAMES[idx], price: Math.round(orig * (1 - disc / 100) * 100) / 100, originalPrice: orig, discount: disc, link: `https://exemplo.com/${mp}/${idx}` });
+    }
+    return out;
+  }
+  const log = (a, level, message, found = 0, sent = 0) => { DB.logs.push({ id: nid(), automation_id: a.id, user_id: a.user_id, level, message, found, sent, created_at: now() }); if (DB.logs.length > 2000) DB.logs.splice(0, DB.logs.length - 2000); };
+  function runAutomation(id, manual = false) {
+    const a = DB.automations.find((x) => x.id === id); if (!a) return {};
+    const t = now(); a.last_run_at = t; a.next_run_at = t + a.interval_min * 60000;
+    const u = DB.users.find((x) => x.id === a.user_id); let found = 0, sent = 0;
+    if (!u || !hasAccess(u)) { log(a, 'warn', 'Assinatura inativa ou teste expirado. Automação pausada.'); a.active = false; save(); return { paused: true }; }
+    const queries = [...a.keywords, ...a.niches.map((n) => NICHES[n]?.q).filter(Boolean)];
+    const dests = a.destination_ids.filter((d) => DB.destinations.some((x) => x.id === d));
+    if (!queries.length || !dests.length) { log(a, 'warn', 'Configure nicho/palavras-chave e ao menos um destino.'); save(); return {}; }
+    const seen = new Set(), cands = [];
+    for (const mp of a.marketplaces) for (const q of queries) for (const o of demoSearch(mp, q, a.max_per_run)) { const k = o.marketplace + ':' + o.id; if (seen.has(k)) continue; seen.add(k); cands.push(o); }
+    const fresh_ = cands.filter((o) => (!a.min_discount || o.discount >= a.min_discount) && !DB.offers.some((x) => x.automation_id === a.id && x.marketplace === o.marketplace && x.product_id === o.id)).sort((x, y) => y.discount - x.discount);
+    found = fresh_.length;
+    for (const o of fresh_.slice(0, a.max_per_run)) { DB.offers.push({ id: nid(), automation_id: a.id, user_id: a.user_id, marketplace: o.marketplace, marketplaceName: o.marketplaceName, product_id: o.id, title: o.title, price: o.price, discount: o.discount, link: o.link, message: render(a.template, o), created_at: now() }); sent++; }
+    log(a, 'info', `${manual ? 'Execução manual: ' : ''}${found} nova(s) oferta(s) simulada(s), ${sent} preparada(s) para envio [SIMULADO].`, found, sent);
+    save(); return { found, sent };
+  }
+  function tick() { let n = 0; for (const a of DB.automations.filter((x) => x.active && (!x.next_run_at || x.next_run_at <= now()))) { runAutomation(a.id); n++; } return n; }
+
+  // ---------- painel ----------
+  function dashboard(u) {
+    const offers = DB.offers.filter((o) => o.user_id === u.id), logs = DB.logs.filter((l) => l.user_id === u.id).sort((a, b) => b.id - a.id), autos = automations(u.id);
+    return { activeAutomations: autos.filter((a) => a.active).length, totalAutomations: autos.length, offersFound: logs.reduce((t, l) => t + l.found, 0), offersPrepared: offers.length, errors24h: logs.filter((l) => l.level === 'error' && l.created_at > now() - 86400000).length, automations: autos, recentLogs: logs.slice(0, 8) };
+  }
+  const offersOf = (u, page = 0) => DB.offers.filter((o) => o.user_id === u.id).sort((a, b) => b.id - a.id).slice(page * 25, page * 25 + 25).map((o) => ({ ...o, automation_name: DB.automations.find((a) => a.id === o.automation_id)?.name || '—' }));
+  const logsOf = (u, level) => DB.logs.filter((l) => l.user_id === u.id && (!level || l.level === level)).sort((a, b) => b.id - a.id).slice(0, 50).map((l) => ({ ...l, automation_name: DB.automations.find((a) => a.id === l.automation_id)?.name || '—' }));
+
+  // ---------- assinatura por Pix ----------
+  const billing = (u) => ({ pixKey: pixKeyClean(), pixName: CFG.pixName, options: Object.values(PLANS).map((p) => ({ ...p, payload: pixPayload(p.price, `PB${u.id}${p.id}`) })), payments: DB.payments.filter((p) => p.user_id === u.id).sort((a, b) => b.id - a.id) });
+  function claimPayment(u, planId) {
+    const p = PLANS[planId] || err('Plano inválido.');
+    if (DB.payments.some((x) => x.user_id === u.id && x.status === 'pending')) err('Você já tem um pagamento aguardando confirmação.');
+    DB.payments.push({ id: nid(), user_id: u.id, plan: p.id, amount: p.price, status: 'pending', created_at: now(), decided_at: null }); save();
+  }
+
+  // ---------- admin ----------
+  const realUsers = () => DB.users.filter((u) => !u.is_admin);
+  function adminOverview() {
+    const us = realUsers(), act = us.filter((u) => u.plan_status === 'active' && hasAccess(u));
+    return { users: us.length, active: act.length, trial: us.filter((u) => u.plan_status === 'trial' && u.trial_ends_at > now()).length, mrr: act.reduce((t, u) => t + (PLANS[u.plan]?.price || 0), 0), automationsActive: DB.automations.filter((a) => a.active).length, offers: DB.offers.length, errors24h: DB.logs.filter((l) => l.level === 'error' && l.created_at > now() - 86400000).length };
+  }
+  const adminUsers = (q = '') => realUsers().filter((u) => (u.name + u.email).toLowerCase().includes(q.toLowerCase())).sort((a, b) => b.id - a.id)
+    .map((u) => ({ ...u, automations: DB.automations.filter((a) => a.user_id === u.id).length, active_automations: DB.automations.filter((a) => a.user_id === u.id && a.active).length }));
+  function adminUpdate(id, b) {
+    const u = realUsers().find((x) => x.id === id) || err('Usuário não encontrado.');
+    if (PLANS[b.plan]) u.plan = b.plan; if (['active', 'trial', 'canceled'].includes(b.status)) u.plan_status = b.status;
+    if (b.extend_trial_days) u.trial_ends_at = Math.max(now(), u.trial_ends_at || 0) + Math.min(Number(b.extend_trial_days), 90) * 86400000;
+    if (u.plan_status === 'canceled') DB.automations.filter((a) => a.user_id === u.id).forEach((a) => { a.active = false; }); save();
+  }
+  function adminDelete(id) { const u = realUsers().find((x) => x.id === id); if (!u) return; DB.users = DB.users.filter((x) => x.id !== id); for (const k of ['destinations', 'automations', 'offers', 'logs', 'payments']) DB[k] = DB[k].filter((r) => r.user_id !== id); save(); }
+  const adminPayments = () => DB.payments.map((p) => ({ ...p, ...(({ name, email }) => ({ name, email }))(DB.users.find((u) => u.id === p.user_id) || { name: '?', email: '?' }) })).sort((a, b) => (b.status === 'pending') - (a.status === 'pending') || b.id - a.id);
+  function adminDecide(id, action) {
+    const p = DB.payments.find((x) => x.id === id && x.status === 'pending') || err('Pagamento pendente não encontrado.');
+    if (action === 'approve') { const u = DB.users.find((x) => x.id === p.user_id); const base = Math.max(now(), u.plan_status === 'active' ? u.plan_expires_at || 0 : 0); u.plan = p.plan; u.plan_status = 'active'; u.plan_expires_at = base + 30 * 86400000; p.status = 'approved'; }
+    else if (action === 'reject') p.status = 'rejected'; else err('Ação inválida.');
+    p.decided_at = now(); save();
+  }
+  const reset = () => { DB = fresh(); save(); logout(); };
+  const exportData = () => JSON.stringify(DB, null, 2);
+  return { PLANS, MARKETPLACES, NICHES, INTERVALS, DEFAULT_TEMPLATE, CFG, planOf, hasAccess, currentUser, register, login, adminLogin, logout, render, sample, pixPayload, crc16, destinations, addDestination, deleteDestination, automations, saveAutomation, deleteAutomation, toggle, runAutomation, tick, dashboard, offersOf, logsOf, billing, claimPayment, adminOverview, adminUsers, adminUpdate, adminDelete, adminPayments, adminDecide, reset, exportData, isPersistent: () => persistent, _db: () => DB };
+})();
+
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = (t) => (t ? new Date(t).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '—');
+const brl = (n) => Number(n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const root = $('#root');
+function toast(msg, err) { const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg; document.body.append(t); setTimeout(() => t.remove(), 4200); }
+const guard = (fn) => async (...a) => { try { await fn(...a); } catch (e) { toast(e.message, true); } };
+const badge = (l) => `<span class="badge ${{ error: 'b-err', warn: 'b-warn', success: 'b-ok', info: 'b-off' }[l] || 'b-off'}">${{ error: 'Erro', warn: 'Aviso', success: 'Sucesso', info: 'Simulado' }[l] || l}</span>`;
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch {}
+  try { const t = document.createElement('textarea'); t.value = text; t.style.cssText = 'position:fixed;opacity:0'; document.body.append(t); t.select(); const ok = document.execCommand('copy'); t.remove(); return ok; } catch { return false; }
+}
+const S = { view: 'overview', billPlan: null, histTab: 'offers', histLevel: '' };
+const closeModal = () => $('#modal').classList.remove('open');
+
+// ---------- roteador (interno: não altera a URL, então funciona dentro de qualquer visualizador) ----------
+let CUR = location.hash.slice(1).startsWith('/') ? location.hash.slice(1) : '/';
+const go = (p) => { CUR = p; route(); };
+function scrollToId(id) { if (!$('#planos')) go('/'); requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })); }
+function route() {
+  closeModal();
+  const [path, qs] = CUR.split('?'); const u = Core.currentUser();
+  if (path === '/cadastro' || path === '/login') { if (u && !u.is_admin) return go('/app'); window.scrollTo(0, 0); return authPage(path === '/cadastro', new URLSearchParams(qs || '').get('plano') || 'pro'); }
+  if (path === '/app') {
+    if (!u || u.is_admin) return go('/login');
+    const q = new URLSearchParams(qs || '');
+    if (VIEWS[q.get('view')]) S.view = q.get('view');
+    if (Core.PLANS[q.get('plano')]) S.billPlan = q.get('plano');
+    window.scrollTo(0, 0); return appShell(u);
+  }
+  if (path === '/admin-login') { window.scrollTo(0, 0); return adminLoginPage(); }
+  if (path === '/admin') { if (!u || !u.is_admin) return go('/admin-login'); window.scrollTo(0, 0); return adminPage(); }
+  landing();
+}
+// todo link interno (href="#/...", "#recursos"...) é tratado aqui, sem navegar de verdade
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="#"]'); if (!a) return;
+  e.preventDefault(); const h = a.getAttribute('href').slice(1);
+  if (h.startsWith('/')) go(h); else if (h) scrollToId(h);
+});
+window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (h.startsWith('/')) go(h); else if (h) scrollToId(h); });
+
+// ---------- landing ----------
+function landing() {
+  root.innerHTML = $('#tpl-landing').innerHTML;
+  const feats = { starter: ['1 automação', 'Até 3 grupos/destinos', 'Intervalo mín. 30 min', 'Até 3 ofertas por envio'], pro: ['5 automações', 'Até 15 grupos/destinos', 'Intervalo mín. 10 min', 'Até 5 ofertas por envio'], business: ['20 automações', 'Até 100 grupos/destinos', 'Intervalo mín. 5 min', 'Até 10 ofertas por envio'] };
+  $('#plans').innerHTML = Object.values(Core.PLANS).map((p) => `<div class="card plan ${p.id === 'pro' ? 'pop' : ''}">${p.id === 'pro' ? '<span class="tag">Mais popular</span>' : ''}<h3>${p.name}</h3><div class="price">R$ ${p.price}<span>/mês</span></div>
+  <ul>${feats[p.id].map((f) => `<li>${f}</li>`).join('')}<li>Histórico e registro de erros</li><li>Editor de mensagem</li></ul><a class="btn ${p.id === 'pro' ? '' : 'ghost'}" href="#/cadastro?plano=${p.id}">Escolher ${p.name}</a></div>`).join('');
+  $('#plans').insertAdjacentHTML('afterend', `<div class="card" style="max-width:640px;margin:26px auto 0;text-align:center"><h3>Pague por Pix</h3><p class="muted small" style="margin:8px 0 14px">Escolha o plano, gere o Pix com o valor exato dentro do painel ou pague direto pela chave abaixo.</p><div class="row" style="justify-content:center"><input readonly id="lpix" value="${esc(Core.billing({ id: 0 }).pixKey)}" style="max-width:220px;text-align:center"><button class="btn sm" data-copy="lpix">Copiar chave Pix</button></div></div>`);
+  const me = Core.currentUser();
+  if (me && !me.is_admin) {
+    root.querySelectorAll('a[href^="#/cadastro"]').forEach((a) => { const pl = new URLSearchParams(a.getAttribute('href').split('?')[1] || '').get('plano'); a.setAttribute('href', pl ? `#/app?view=billing&plano=${pl}` : '#/app'); });
+    root.querySelectorAll('a[href="#/login"]').forEach((a) => { a.setAttribute('href', '#/app'); a.textContent = 'Meu painel'; });
+  }
+  window.scrollTo(0, 0);
+}
+
+// ---------- cadastro / login ----------
+function authPage(signup, want) {
+  root.innerHTML = `<div class="auth"><div class="card"><a class="logo" href="#/"><i>🤖</i>Promo Bot AI</a><h1>${signup ? 'Criar sua conta' : 'Entrar'}</h1>${signup ? '<p class="muted small" style="margin:0">7 dias grátis. Você será levado direto ao painel.</p>' : ''}
+  <form id="f">${signup ? `<label>Plano</label><div class="plans-pick">${Object.values(Core.PLANS).map((p) => `<label><input type="radio" name="plan" value="${p.id}" ${p.id === want ? 'checked' : ''}><span><b>${p.name}</b>R$ ${p.price}/mês</span></label>`).join('')}</div><label>Nome</label><input name="name" required maxlength="80">` : ''}
+  <label>E-mail</label><input name="email" type="email" required><label>Senha${signup ? ' (mín. 8 caracteres)' : ''}</label><input name="password" type="password" ${signup ? 'minlength="8"' : ''} required>
+  <div class="err" id="err"></div><button class="btn" style="width:100%;margin-top:6px">${signup ? 'Criar conta e entrar' : 'Entrar'}</button></form>
+  <p class="muted small" style="text-align:center;margin-top:18px">${signup ? 'Já tem conta? <a href="#/login" style="color:var(--brand)">Entrar</a>' : 'Novo por aqui? <a href="#/cadastro" style="color:var(--brand)">Criar conta</a>'}</p></div></div>`;
+  $('#f').addEventListener('submit', async (e) => { e.preventDefault(); const f = e.target; $('#err').textContent = '';
+    try { if (signup) await Core.register({ name: f.name.value, email: f.email.value, password: f.password.value, plan: f.plan.value }); else await Core.login(f.email.value, f.password.value); go('/app'); } catch (x) { $('#err').textContent = x.message; } });
+}
+function adminLoginPage() {
+  root.innerHTML = `<div class="auth"><div class="card"><a class="logo" href="#/"><i>🛡️</i>Promo Bot AI · Admin</a><h1>Acesso do administrador</h1><form id="f"><label>Código de administrador</label><input name="code" type="password" required autofocus><div class="err" id="err"></div><button class="btn" style="width:100%;margin-top:6px">Entrar no painel admin</button></form></div></div>`;
+  $('#f').addEventListener('submit', async (e) => { e.preventDefault(); try { await Core.adminLogin(e.target.code.value); go('/admin'); } catch (x) { $('#err').textContent = x.message; } });
+}
+
+// ---------- app (usuário) ----------
+function appShell(u) {
+  root.innerHTML = `<div class="app"><aside class="side" id="side"><a class="logo" href="#/"><i>🤖</i>Promo Bot AI</a>
+  ${[['overview', '📊 Visão geral'], ['automations', '⚙️ Automações'], ['destinations', '💬 Grupos / Destinos'], ['integrations', '🔑 Integrações'], ['history', '🕘 Histórico'], ['billing', '💳 Assinatura']].map(([v, l]) => `<button class="nav-i" data-view="${v}">${l}</button>`).join('')}
+  <div class="foot"><div style="font-weight:600">${esc(u.name)}</div><div class="muted">Plano ${esc(Core.planOf(u).name)} · ${u.plan_status === 'active' ? 'ativo' : u.plan_status === 'trial' ? 'teste' : u.plan_status}</div><button class="btn ghost sm" style="margin-top:10px;width:100%" data-action="logout">Sair</button></div></aside>
+  <main class="main"><button class="btn ghost sm menu-btn" data-action="menu" style="margin-bottom:12px">☰ Menu</button><div id="view"></div></main></div>`;
+  renderView();
+}
+function renderView() {
+  const u = Core.currentUser(); if (!u || !$('#view')) return;
+  document.querySelectorAll('.nav-i').forEach((b) => b.classList.toggle('on', b.dataset.view === S.view));
+  $('#view').innerHTML = VIEWS[S.view](u);
+}
+const VIEWS = {
+  overview(u) {
+    const d = Core.dashboard(u), banners = ['Modo SIMULADO: as ofertas são de exemplo e este arquivo não envia nada ao WhatsApp nem consulta marketplaces. Veja “Integrações”.'];
+    return `<div class="head"><div><h1>Visão geral</h1><div class="muted">Olá, ${esc(u.name.split(' ')[0])}! Resumo das suas automações.</div></div><button class="btn" data-action="new-auto">+ Nova automação</button></div>${Core.isPersistent() ? '' : '<div class="banner">Este visualizador bloqueou o armazenamento do navegador: seus dados só duram enquanto esta página estiver aberta. Baixe o arquivo e abra direto no Chrome/Safari para salvar de verdade.</div>'}${banners.map((b) => `<div class="banner">${esc(b)}</div>`).join('')}${!Core.hasAccess(u) || u.plan_status === 'trial' ? `<div class="banner row" style="justify-content:space-between"><span>${!Core.hasAccess(u) ? 'Seu período de teste terminou.' : `Teste grátis até ${fmt(u.trial_ends_at)}.`}</span><button class="btn sm" data-view="billing">Assinar agora</button></div>` : ''}
+    <div class="stats"><div class="card stat"><b>${d.activeAutomations}</b><span>Automações ativas (de ${d.totalAutomations})</span></div><div class="card stat"><b>${d.offersFound}</b><span>Ofertas encontradas</span></div><div class="card stat"><b>${d.offersPrepared}</b><span>Ofertas preparadas (simuladas)</span></div><div class="card stat"><b style="color:${d.errors24h ? 'var(--err)' : 'var(--ok)'}">${d.errors24h}</b><span>Erros nas últimas 24h</span></div></div>
+    <div class="two"><div class="card"><h3 style="margin-bottom:12px">Status das automações</h3>${d.automations.length ? `<table><tr><th>Nome</th><th>Status</th><th>Próxima execução</th></tr>${d.automations.map((a) => `<tr><td>${esc(a.name)}</td><td>${a.active ? '<span class="badge b-ok">Ativa</span>' : '<span class="badge b-off">Pausada</span>'}</td><td class="muted">${a.active ? fmt(a.next_run_at) : '—'}</td></tr>`).join('')}</table>` : '<div class="empty">Nenhuma automação criada ainda.<div style="margin-top:12px"><button class="btn sm" data-action="new-auto">Criar primeira automação</button></div></div>'}</div>
+    <div class="card"><h3 style="margin-bottom:12px">Últimos eventos</h3>${d.recentLogs.length ? `<table>${d.recentLogs.map((l) => `<tr><td style="width:80px">${badge(l.level)}</td><td>${esc(l.message)}<div class="muted small">${fmt(l.created_at)}</div></td></tr>`).join('')}</table>` : '<div class="empty">Sem eventos ainda.</div>'}</div></div>`;
+  },
+  automations(u) {
+    const list = Core.automations(u.id), lim = Core.planOf(u);
+    return `<div class="head"><div><h1>Automações</h1><div class="muted">Plano ${esc(lim.name)}: ${list.length}/${lim.maxAutomations} automação(ões). O agendador roda enquanto esta aba estiver aberta.</div></div><button class="btn" data-action="new-auto">+ Nova automação</button></div>
+    ${list.length ? list.map((a) => `<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><div><h3>${esc(a.name)}</h3><div class="muted small">${a.marketplaces.map((m) => Core.MARKETPLACES.find((x) => x.id === m)?.name).join(', ')} · a cada ${a.interval_min} min · até ${a.max_per_run}/envio · última: ${fmt(a.last_run_at)}</div>
+    <div class="chips" style="margin-top:8px">${a.niches.map((n) => `<span style="cursor:default;padding:3px 10px;font-size:12px">${esc(Core.NICHES[n]?.name)}</span>`).join('')}${a.keywords.map((k) => `<span style="cursor:default;padding:3px 10px;font-size:12px;color:var(--accent)">🔎 ${esc(k)}</span>`).join('')}</div></div>
+    <div class="row"><label class="switch"><input type="checkbox" data-toggle="${a.id}" ${a.active ? 'checked' : ''}><i></i></label><button class="btn ghost sm" data-run="${a.id}">▶ Executar agora</button><button class="btn ghost sm" data-edit="${a.id}">Editar</button><button class="btn danger sm" data-del="${a.id}">Excluir</button></div></div></div>`).join('') : '<div class="card empty">Nenhuma automação. Crie a primeira para começar.<div style="margin-top:12px"><button class="btn" data-action="new-auto">+ Nova automação</button></div></div>'}`;
+  },
+  destinations(u) {
+    const list = Core.destinations(u.id), lim = Core.planOf(u);
+    return `<div class="head"><div><h1>Grupos / Destinos</h1><div class="muted">${list.length}/${lim.maxDestinations} destinos no plano ${esc(lim.name)}</div></div></div>
+    <div class="card" style="margin-bottom:18px"><h3>Adicionar destino</h3><form id="df"><div class="two"><div><label>Nome (para você identificar)</label><input name="name" required maxlength="80" placeholder="Ofertas Tech BR"></div><div><label>Tipo</label><select name="type"><option value="group">Grupo do WhatsApp</option><option value="phone">Contato (número com DDI)</option></select></div></div>
+    <label>ID do grupo ou número com DDI (ex.: 5511999999999)</label><input name="target" required maxlength="120"><label class="row" style="margin-top:14px;color:var(--text);cursor:pointer"><input type="checkbox" name="authorized" style="width:auto"> Confirmo que sou responsável por este destino e que os participantes aceitam receber estas mensagens.</label><button class="btn" style="margin-top:14px">Adicionar</button></form></div>
+    <div class="card">${list.length ? `<table><tr><th>Nome</th><th>Tipo</th><th>Identificador</th><th></th></tr>${list.map((d) => `<tr><td>${esc(d.name)}</td><td>${d.type === 'group' ? 'Grupo' : 'Contato'}</td><td class="muted">${esc(d.target)}</td><td style="text-align:right"><button class="btn danger sm" data-deldest="${d.id}">Remover</button></td></tr>`).join('')}</table>` : '<div class="empty">Nenhum destino cadastrado.</div>'}</div>`;
+  },
+  integrations() {
+    return `<div class="head"><div><h1>Integrações</h1><div class="muted">Mercado Livre, Shopee e WhatsApp Business (APIs oficiais)</div></div></div>
+    <div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><h3>Modo atual</h3><span class="badge b-warn">Simulado (arquivo HTML)</span></div>
+    <p class="muted">Este arquivo HTML roda 100% no seu navegador. Os dados ficam salvos só neste navegador e as ofertas são de <b>exemplo</b>. Um arquivo HTML sozinho <b>não pode</b> guardar chaves de API com segurança nem executar automações com o navegador fechado, nem enviar ao WhatsApp pela API oficial (que exige servidor).</p>
+    <p class="muted">Por isso não há campos de chave aqui: colocá-las em um arquivo HTML as deixaria expostas. Para envio real, use a versão com servidor (<code>promo-bot-ai.zip</code>), que guarda as credenciais criptografadas.</p></div>
+    <div class="card"><h3 style="margin-bottom:8px">Dados deste navegador</h3><div class="row"><button class="btn ghost sm" data-action="export">Baixar backup (JSON)</button><button class="btn danger sm" data-action="reset">Apagar todos os dados</button></div></div>`;
+  },
+  history(u) {
+    const tabs = `<div class="row" style="margin-bottom:16px"><button class="btn ${S.histTab === 'offers' ? '' : 'ghost'} sm" data-tab="offers">Ofertas preparadas</button><button class="btn ${S.histTab === 'logs' ? '' : 'ghost'} sm" data-tab="logs">Status e erros</button>
+    ${S.histTab === 'logs' ? `<select id="lvl" style="width:auto"><option value="">Todos</option>${['error', 'warn', 'info'].map((l) => `<option value="${l}" ${S.histLevel === l ? 'selected' : ''}>${{ error: 'Erros', warn: 'Avisos', info: 'Simulado' }[l]}</option>`).join('')}</select>` : ''}</div>`;
+    let body;
+    if (S.histTab === 'offers') { const rows = Core.offersOf(u); body = rows.length ? `<table><tr><th>Data</th><th>Produto</th><th>Preço</th><th>Automação</th><th></th></tr>${rows.map((o) => `<tr><td class="muted">${fmt(o.created_at)}</td><td>${esc(o.title)} <span class="badge b-warn">simulado</span><div class="muted small">${esc(o.marketplaceName)}</div></td><td>${brl(o.price)}${o.discount ? ` <span class="badge b-ok">-${o.discount}%</span>` : ''}</td><td class="muted">${esc(o.automation_name)}</td><td style="white-space:nowrap"><button class="btn ghost sm" data-copymsg="${o.id}">Copiar mensagem</button> <a class="btn ghost sm" target="_blank" rel="noopener noreferrer" href="https://wa.me/?text=${encodeURIComponent(o.message)}">Abrir no WhatsApp</a></td></tr>`).join('')}</table>` : '<div class="empty">Nenhuma oferta ainda. Ative uma automação ou use “Executar agora”.<div style="margin-top:12px"><button class="btn sm" data-view="automations">Ir para Automações</button></div></div>'; }
+    else { const rows = Core.logsOf(u, S.histLevel); body = rows.length ? `<table><tr><th>Data</th><th>Nível</th><th>Mensagem</th><th>Automação</th></tr>${rows.map((l) => `<tr><td class="muted">${fmt(l.created_at)}</td><td>${badge(l.level)}</td><td>${esc(l.message)}</td><td class="muted">${esc(l.automation_name)}</td></tr>`).join('')}</table>` : '<div class="empty">Sem registros.</div>'; }
+    return `<div class="head"><div><h1>Histórico</h1><div class="muted">“Abrir no WhatsApp” usa o link oficial de compartilhamento: você escolhe o grupo e envia manualmente.</div></div></div>${tabs}<div class="card">${body}</div>`;
+  },
+  billing(u) {
+    const b = Core.billing(u); S.billPlan = S.billPlan || u.plan; const opt = b.options.find((o) => o.id === S.billPlan) || b.options[0], pending = b.payments.find((p) => p.status === 'pending');
+    const st = u.plan_status === 'active' ? `Ativa até ${fmt(u.plan_expires_at)}` : u.plan_status === 'trial' ? `Teste até ${fmt(u.trial_ends_at)}` : 'Cancelada';
+    return `<div class="head"><div><h1>Assinatura</h1><div class="muted">Plano atual: <b>${esc(u.plan)}</b> · ${st}${Core.hasAccess(u) ? '' : ' · <span style="color:var(--err)">sem acesso</span>'}</div></div></div>
+    <div class="card" style="margin-bottom:18px"><h3 style="margin-bottom:10px">Escolha o plano</h3><div class="plans-pick">${b.options.map((o) => `<label><input type="radio" name="bp" value="${o.id}" ${o.id === opt.id ? 'checked' : ''}><span><b>${o.name}</b>R$ ${o.price}/mês</span></label>`).join('')}</div></div>
+    <div class="card" style="margin-bottom:18px"><h3 style="margin-bottom:6px">Pagar com Pix — ${brl(opt.price)}</h3><p class="muted small">Favorecido: ${esc(b.pixName)}. Pague pelo app do seu banco e clique em “Já paguei”. A liberação é feita após a confirmação do pagamento.</p>
+    <label>Pix copia e cola (com o valor do plano)</label><textarea readonly style="min-height:90px" id="pixcode">${esc(opt.payload)}</textarea><div class="row" style="margin-top:10px"><button class="btn sm" data-copy="pixcode">Copiar código Pix</button></div>
+    <label style="margin-top:18px">Ou use a chave Pix</label><div class="row"><input readonly id="pixkey" value="${esc(b.pixKey)}" style="max-width:280px"><button class="btn ghost sm" data-copy="pixkey">Copiar chave</button></div>
+    <div style="margin-top:20px;border-top:1px solid var(--line);padding-top:16px">${pending ? '<span class="badge b-warn">Pagamento aguardando confirmação</span>' : `<button class="btn" data-claim="${opt.id}">Já paguei — avisar</button>`}</div></div>
+    <div class="card"><h3 style="margin-bottom:12px">Histórico de pagamentos</h3>${b.payments.length ? `<table><tr><th>Data</th><th>Plano</th><th>Valor</th><th>Status</th></tr>${b.payments.map((p) => `<tr><td class="muted">${fmt(p.created_at)}</td><td>${esc(p.plan)}</td><td>${brl(p.amount)}</td><td>${p.status === 'approved' ? '<span class="badge b-ok">Aprovado</span>' : p.status === 'pending' ? '<span class="badge b-warn">Aguardando</span>' : '<span class="badge b-err">Recusado</span>'}</td></tr>`).join('')}</table>` : '<div class="empty">Nenhum pagamento registrado.</div>'}</div>`;
+  },
+};
+
+function openAutoForm(id) {
+  const u = Core.currentUser(), dests = Core.destinations(u.id), lim = Core.planOf(u);
+  const a = id ? Core.automations(u.id).find((x) => x.id === id) : { name: '', marketplaces: [], niches: [], keywords: [], interval_min: Math.max(30, lim.minInterval), max_per_run: 3, min_discount: 0, template: Core.DEFAULT_TEMPLATE, destination_ids: [] };
+  $('#modalBody').innerHTML = `<div class="head"><h2>${id ? 'Editar' : 'Nova'} automação</h2><button class="btn ghost sm" data-action="close">✕</button></div>
+  <form id="af"><label>Nome</label><input name="name" value="${esc(a.name)}" maxlength="80" placeholder="Ex.: Ofertas Tech" required>
+  <label>Marketplaces</label><div class="chips">${Core.MARKETPLACES.map((m) => `<label><input type="checkbox" name="marketplaces" value="${m.id}" ${a.marketplaces.includes(m.id) ? 'checked' : ''}><span>${m.name}</span></label>`).join('')}</div>
+  <label>Nicho / classificação</label><div class="chips">${Object.entries(Core.NICHES).map(([k, n]) => `<label><input type="checkbox" name="niches" value="${k}" ${a.niches.includes(k) ? 'checked' : ''}><span>${n.name}</span></label>`).join('')}</div>
+  <label>Palavras-chave (separadas por vírgula)</label><input name="keywords" value="${esc(a.keywords.join(', '))}" placeholder="ex.: ssd 1tb, monitor gamer">
+  <div class="two"><div><label>Intervalo de envio</label><select name="interval_min">${Core.INTERVALS.map((i) => `<option value="${i}" ${a.interval_min === i ? 'selected' : ''} ${i < lim.minInterval ? 'disabled' : ''}>A cada ${i} min${i < lim.minInterval ? ' (plano superior)' : ''}</option>`).join('')}</select></div>
+  <div><label>Máx. de ofertas por envio (até ${lim.maxPerRun})</label><input name="max_per_run" type="number" min="1" max="${lim.maxPerRun}" value="${a.max_per_run}"></div></div>
+  <label>Desconto mínimo (%) — 0 para não filtrar</label><input name="min_discount" type="number" min="0" max="90" value="${a.min_discount}">
+  <label>Enviar para (destinos autorizados)</label>${dests.length ? `<div class="chips">${dests.map((d) => `<label><input type="checkbox" name="destination_ids" value="${d.id}" ${a.destination_ids.includes(d.id) ? 'checked' : ''}><span>${esc(d.name)}</span></label>`).join('')}</div>` : '<div class="banner row" style="justify-content:space-between"><span>Cadastre um destino primeiro.</span><button type="button" class="btn sm" data-action="goto-dest">Cadastrar destino</button></div>'}
+  <label>Modelo da mensagem</label><div class="row" style="margin-bottom:8px">${['nome', 'preco', 'preco_original', 'desconto', 'marketplace', 'link'].map((v) => `<span class="var" data-var="{${v}}">{${v}}</span>`).join('')}<span class="muted small">clique para inserir</span></div>
+  <div class="two"><textarea name="template" id="tpl">${esc(a.template)}</textarea><div class="preview" id="pv"></div></div>
+  <p class="muted small">Linhas com variável vazia são omitidas. O modelo deve conter {link}. Use *negrito*, _itálico_ e ~riscado~ do WhatsApp.</p>
+  <div class="row" style="margin-top:14px"><button class="btn">Salvar automação</button><button type="button" class="btn ghost" data-action="close">Cancelar</button></div></form>`;
+  $('#modal').classList.add('open');
+  const upd = () => { $('#pv').textContent = Core.render($('#tpl').value || Core.DEFAULT_TEMPLATE, Core.sample); };
+  $('#tpl').addEventListener('input', upd); upd();
+  $('#af').addEventListener('submit', guard(async (e) => { e.preventDefault(); const f = e.target, g = (n) => [...f.querySelectorAll(`[name=${n}]:checked`)].map((i) => i.value);
+    Core.saveAutomation(Core.currentUser(), id || null, { name: f.name.value, marketplaces: g('marketplaces'), niches: g('niches'), keywords: f.keywords.value.split(',').map((s) => s.trim()).filter(Boolean), interval_min: Number(f.interval_min.value), max_per_run: Number(f.max_per_run.value), min_discount: Number(f.min_discount.value), destination_ids: g('destination_ids'), template: f.template.value });
+    closeModal(); toast('Automação salva.'); renderView(); }));
+}
+
+// ---------- admin ----------
+let adminQ = '';
+function adminPage() {
+  const o = Core.adminOverview(), users = Core.adminUsers(adminQ), pays = Core.adminPayments(), pend = pays.filter((p) => p.status === 'pending').length;
+  const st = (u) => u.plan_status === 'active' ? '<span class="badge b-ok">Ativo</span>' : u.plan_status === 'canceled' ? '<span class="badge b-err">Cancelado</span>' : (u.trial_ends_at > Date.now() ? '<span class="badge b-warn">Teste</span>' : '<span class="badge b-err">Teste expirado</span>');
+  const keep = document.activeElement?.id === 'q' ? document.activeElement.selectionStart : null;
+  root.innerHTML = `<main class="main" style="margin:0 auto"><div class="head"><a class="logo" href="#/"><i>🛡️</i>Promo Bot AI · Admin</a><button class="btn ghost sm" data-action="admin-out">Sair</button></div>
+  <div class="banner">Neste arquivo HTML o admin enxerga apenas as contas criadas <b>neste navegador</b>. Para gerir clientes de verdade, use a versão com servidor.</div>
+  <div class="stats"><div class="card stat"><b>${o.users}</b><span>Usuários</span></div><div class="card stat"><b>${o.active}</b><span>Assinaturas ativas</span></div><div class="card stat"><b>${brl(o.mrr)}</b><span>Receita mensal (MRR)</span></div><div class="card stat"><b>${o.trial}</b><span>Em teste</span></div></div>
+  <div class="card" style="margin-bottom:18px"><h3 style="margin-bottom:12px">Pagamentos Pix ${pend ? `<span class="badge b-warn">${pend} pendente(s)</span>` : ''}</h3>${pays.length ? `<table><tr><th>Data</th><th>Usuário</th><th>Plano</th><th>Valor</th><th>Status</th><th></th></tr>${pays.map((p) => `<tr data-pay="${p.id}"><td class="muted">${fmt(p.created_at)}</td><td>${esc(p.name)}<div class="muted small">${esc(p.email)}</div></td><td>${esc(p.plan)}</td><td>${brl(p.amount)}</td><td>${p.status === 'pending' ? '<span class="badge b-warn">Pendente</span>' : p.status === 'approved' ? '<span class="badge b-ok">Aprovado</span>' : '<span class="badge b-err">Recusado</span>'}</td><td>${p.status === 'pending' ? '<button class="btn sm" data-approve>Aprovar (+30 dias)</button> <button class="btn danger sm" data-reject>Recusar</button>' : ''}</td></tr>`).join('')}</table>` : '<div class="empty">Nenhum pagamento informado.</div>'}<p class="muted small" style="margin-top:10px">Confira o valor no extrato do seu banco antes de aprovar.</p></div>
+  <div class="card"><div class="row" style="justify-content:space-between;margin-bottom:12px"><h3>Usuários</h3><input id="q" placeholder="Buscar nome ou e-mail" value="${esc(adminQ)}" style="max-width:280px"></div>${users.length ? `<div style="overflow:auto"><table><tr><th>Usuário</th><th>Plano</th><th>Status</th><th>Automações</th><th></th></tr>${users.map((u) => `<tr data-id="${u.id}"><td>${esc(u.name)}<div class="muted small">${esc(u.email)}</div></td>
+  <td><select data-f="plan" style="width:auto;padding:6px">${['starter', 'pro', 'business'].map((p) => `<option ${u.plan === p ? 'selected' : ''}>${p}</option>`).join('')}</select></td><td>${st(u)}<div><select data-f="status" style="width:auto;padding:6px;margin-top:6px">${[['active', 'Ativo'], ['trial', 'Teste'], ['canceled', 'Cancelado']].map(([v, l]) => `<option value="${v}" ${u.plan_status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div></td>
+  <td>${u.active_automations}/${u.automations}</td><td style="white-space:nowrap"><button class="btn sm" data-save>Salvar</button> <button class="btn ghost sm" data-trial>+7d teste</button> <button class="btn danger sm" data-udel>Excluir</button></td></tr>`).join('')}</table></div>` : '<div class="empty">Nenhum usuário.</div>'}</div></main>`;
+  const q = $('#q'); let tm; q.addEventListener('input', (e) => { clearTimeout(tm); tm = setTimeout(() => { adminQ = e.target.value; adminPage(); $('#q').focus(); $('#q').setSelectionRange(adminQ.length, adminQ.length); }, 300); });
+}
+
+// ---------- eventos ----------
+document.addEventListener('click', guard(async (e) => {
+  const t0 = e.target;
+  if (t0.dataset.var) { const t = $('#tpl'); t.setRangeText(t0.dataset.var, t.selectionStart, t.selectionEnd, 'end'); t.focus(); t.dispatchEvent(new Event('input')); return; }
+  const pr = t0.closest('tr[data-pay]');
+  if (pr) { const act = t0.dataset.approve !== undefined ? 'approve' : t0.dataset.reject !== undefined ? 'reject' : null; if (act && (act === 'reject' || confirm('Confirmar que o Pix caiu na conta e liberar o plano por 30 dias?'))) { Core.adminDecide(Number(pr.dataset.pay), act); toast(act === 'approve' ? 'Plano liberado por 30 dias.' : 'Pagamento recusado.'); adminPage(); } return; }
+  const ur = t0.closest('tr[data-id]');
+  if (ur) { const id = Number(ur.dataset.id);
+    if (t0.dataset.save !== undefined) { Core.adminUpdate(id, { plan: ur.querySelector('[data-f=plan]').value, status: ur.querySelector('[data-f=status]').value }); toast('Usuário atualizado.'); adminPage(); }
+    if (t0.dataset.trial !== undefined) { Core.adminUpdate(id, { status: 'trial', extend_trial_days: 7 }); toast('Teste estendido em 7 dias.'); adminPage(); }
+    if (t0.dataset.udel !== undefined && confirm('Excluir este usuário e todos os dados dele?')) { Core.adminDelete(id); toast('Usuário excluído.'); adminPage(); } return; }
+  const t = t0.closest('button,[data-view]'); if (!t) return; const d = t.dataset, u = Core.currentUser();
+  if (d.view) { S.view = d.view; $('#side')?.classList.remove('open'); return renderView(); }
+  if (d.action === 'logout') { Core.logout(); go('/'); }
+  if (d.action === 'admin-out') { Core.logout(); go('/admin-login'); }
+  if (d.action === 'menu') $('#side').classList.toggle('open');
+  if (d.action === 'close') closeModal();
+  if (d.action === 'new-auto') { S.view = 'automations'; renderView(); openAutoForm(); }
+  if (d.action === 'goto-dest') { closeModal(); S.view = 'destinations'; renderView(); }
+  if (d.action === 'export') { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([Core.exportData()], { type: 'application/json' })); a.download = 'promobot-backup.json'; a.click(); }
+  if (d.action === 'reset' && confirm('Apagar TODOS os dados deste navegador (contas, automações, histórico)?')) { Core.reset(); go('/'); toast('Dados apagados.'); }
+  if (d.edit) openAutoForm(Number(d.edit));
+  if (d.del && confirm('Excluir esta automação e seu histórico?')) { Core.deleteAutomation(u, Number(d.del)); toast('Automação excluída.'); renderView(); }
+  if (d.run) { const r = Core.runAutomation(Number(d.run), true); toast(r.paused ? 'Assinatura inativa.' : `Execução concluída: ${r.found ?? 0} encontradas, ${r.sent ?? 0} preparadas.`); renderView(); }
+  if (d.deldest && confirm('Remover destino?')) { Core.deleteDestination(u, Number(d.deldest)); renderView(); }
+  if (d.tab) { S.histTab = d.tab; renderView(); }
+  if (d.copy) { const el = document.getElementById(d.copy); (await copyText(el.value)) ? toast('Copiado!') : (el.select(), toast('Selecionado: use Copiar do seu aparelho.', true)); }
+  if (d.copymsg) { const o = Core.offersOf(u).find((x) => x.id === Number(d.copymsg)); (await copyText(o.message)) ? toast('Mensagem copiada!') : toast('Não foi possível copiar.', true); }
+  if (d.claim) { Core.claimPayment(u, d.claim); toast('Aviso enviado. Aguarde a confirmação do pagamento.'); renderView(); }
+}));
+document.addEventListener('change', guard(async (e) => {
+  const u = Core.currentUser();
+  if (e.target.dataset.toggle) { try { const on = Core.toggle(u, Number(e.target.dataset.toggle)); toast(on ? 'Automação ativada.' : 'Automação pausada.'); } catch (x) { e.target.checked = !e.target.checked; throw x; } renderView(); }
+  if (e.target.id === 'lvl') { S.histLevel = e.target.value; renderView(); }
+  if (e.target.name === 'bp') { S.billPlan = e.target.value; renderView(); }
+}));
+document.addEventListener('submit', guard(async (e) => {
+  const f = e.target, u = Core.currentUser();
+  if (f.id === 'df') { e.preventDefault(); Core.addDestination(u, { name: f.name.value, type: f.type.value, target: f.target.value, authorized: f.authorized.checked }); toast('Destino adicionado.'); renderView(); }
+}));
+$('#modal').addEventListener('mousedown', (e) => { if (e.target.id === 'modal') closeModal(); });
+
+// agendador: roda enquanto a aba estiver aberta
+setInterval(() => { if (Core.tick() && S.view && $('#view') && !$('#modal').classList.contains('open')) renderView(); }, 15000);
+route();
+if (location.hash.slice(1) && !location.hash.slice(1).startsWith('/')) scrollToId(location.hash.slice(1));
+
+</script></body></html>
